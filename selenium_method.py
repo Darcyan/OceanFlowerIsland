@@ -107,6 +107,7 @@ class WebDriver(object):
             self.logger.error(msg)
             result = '{"result": "ERROR", "msg": "%s"}' % msg
             # raise AssertionError(result)
+            self.shot_screen()
             raise
         return result
 
@@ -398,6 +399,7 @@ class WebDriver(object):
             msg = '元素 %s 不可见' % ele.replace("\"", "'")
             self.logger.error(msg)
             result = '{"result": "ERROR", "msg": "%s"}' % msg
+            self.capture_screen()
             raise
         return result
 
@@ -420,6 +422,7 @@ class WebDriver(object):
             self.logger.error(msg)
             result = '{"result": "ERROR", "msg": "%s"}' % msg
             self.logger.info(result)
+            self.shot_screen()
             return False
 
         return True
@@ -662,6 +665,18 @@ class WebDriver(object):
             result = '{"result": "ERROR", "msg": "%s"}' % msg
             raise AssertionError(result)
         return result
+
+    def shot_screen(self):
+        time.sleep(2)
+        picture_time = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
+        try:
+            picture_url = self.driver.save_screenshot('.\\' + "screenshot" + '\\' + picture_time + '.png')
+            print("%s：截图成功！！！" % picture_url)
+        except BaseException as msg:
+            print(msg)
+            raise
+        self.quit()
+        return
 
     def upload_file(self, locator, ele, file_path):
         """

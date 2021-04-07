@@ -4,19 +4,20 @@ import ddt
 import unittest
 from selenium import webdriver
 from common_method import *
+import os
+import time
 
+driver = webdriver.Chrome()
+driver.get("https://www.baidu.com")
+driver.maximize_window()
+time.sleep(2)
+picture_time = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
+print(picture_time)
 
-def get_current_time(add_date=0):
-    # add_date=0,默认加一天
-    current_time= datetime.datetime.now().strftime('%Y-%m-%d')
-    today = datetime.date.today()
-    tomorrow = today + datetime.timedelta(days=add_date)
-    return tomorrow
-
-tomorrow=get_current_time()
-tomorrow1=get_current_time(1)
-tomorrow2=get_current_time(2)
-
-print(tomorrow)
-print(tomorrow1)
-print(tomorrow2)
+try:
+    # picture_url=driver.get_screenshot_as_file(current_direct+"_"+picture_time +'.png')
+    picture_url = driver.save_screenshot('.\\' + "screenshot" + '\\' + picture_time + '.png')
+    print("%s：截图成功！！！" % picture_url)
+except BaseException as msg:
+    print(msg)
+driver.quit()
